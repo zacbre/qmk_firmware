@@ -45,6 +45,7 @@
 #include "quantum.h"
 
 #include "via.h"
+#include "print.h"
 
 #include "raw_hid.h"
 #include "dynamic_keymap.h"
@@ -214,6 +215,10 @@ void raw_hid_receive(uint8_t *data, uint8_t length) {
     uint8_t *command_id   = &(data[0]);
     uint8_t *command_data = &(data[1]);
     switch (*command_id) {
+        case id_custom_hidapp: {
+            raw_hid_receive_kb(data, length);
+            return;
+        }
         case id_get_protocol_version: {
             command_data[0] = VIA_PROTOCOL_VERSION >> 8;
             command_data[1] = VIA_PROTOCOL_VERSION & 0xFF;

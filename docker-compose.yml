@@ -1,0 +1,8 @@
+version: '2'
+services:
+  qmkcli:
+    image: qmkfm/qmk_cli
+    volumes:
+      - ./:/qmk_firmware
+    command: |
+      qmk compile -kb dumbpad/v1x_oled -km via

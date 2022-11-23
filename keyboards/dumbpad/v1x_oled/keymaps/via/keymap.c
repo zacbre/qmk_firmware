@@ -15,6 +15,13 @@
  */
 #include QMK_KEYBOARD_H
 
+#define KC_COPY   LCTL(KC_C)
+#define KC_CUT    LCTL(KC_X)
+#define KC_PASTE  LCTL(KC_V)
+#define KC_UNDO  LCTL(KC_Z)
+#define KC_REDO  LCTL(KC_Y)
+#define KC_OREDO  LCTL(LSFT(KC_Z))
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
             BASE LAYER
@@ -29,10 +36,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     \-----------------------------------------------------'
     */
     [0] = LAYOUT(
-                    KC_7,      KC_8,    KC_9,             KC_BSPC,
-                    KC_4,      KC_5,    KC_6,             KC_ESC,
-                    KC_1,      KC_2,    KC_3,             KC_TAB,
-        KC_MUTE,    TT(1),     KC_0,    LSFT_T(KC_DOT),   KC_ENTER
+                    KC_CUT,   KC_COPY,   KC_PASTE, _______,
+                    KC_UNDO,  KC_REDO,   KC_OREDO, KC_6,
+                    KC_TAB,   KC_1,      KC_2,     KC_EQL,
+        KC_MUTE,    _______,  KC_LOCK,   KC_0,     KC_LSHIFT
     ),
     /*
             SUB LAYER
@@ -47,10 +54,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     \-----------------------------------------------------'
     */
     [1] = LAYOUT(
-                    _______,     _______,     _______,      QK_BOOT,
+                    KC_F20 ,     KC_F21 ,     KC_F22 ,      _______,
                     _______,     _______,     _______,      KC_KP_PLUS,
                     _______,     _______,     _______,      KC_KP_MINUS,
-        KC_LOCK,    _______,     _______,     _______,      KC_EQL
+        _______,    _______,     _______,     _______,      KC_EQL
     ),
 
     [2] = LAYOUT(
@@ -65,5 +72,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     _______,     _______,     _______,      _______,
                     _______,     _______,     _______,      _______,
         _______,    _______,     _______,     _______,      _______
-    )
+    ),
+    [4] = LAYOUT(
+                   KC_MS_BTN2,   KC_MS_UP,    KC_MS_BTN1,   KC_MS_WH_UP,
+                   KC_MS_LEFT,   KC_MS_DOWN,  KC_MS_RIGHT,  KC_MS_WH_DOWN,
+                   _______,      KC_UP,       _______,      _______,
+        _______,   KC_LEFT,      KC_DOWN,     KC_RIGHT,     _______
+        ),
 };

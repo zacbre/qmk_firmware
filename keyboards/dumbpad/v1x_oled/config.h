@@ -15,13 +15,22 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #include "config_common.h"
 
+#define DYNAMIC_KEYMAP_LAYER_COUNT 5
+
 /* Column/Row IO definitions */
+/* //vertical
+#define MATRIX_ROWS 5
+#define MATRIX_COLS 4
+#define MATRIX_ROW_PINS { C6, B6, B2, B3, B1 }
+#define MATRIX_COL_PINS { F7, F6, F5, F4 }*/
+
+//horizontal
 #define MATRIX_ROWS 4
 #define MATRIX_COLS 5
-
 #define MATRIX_ROW_PINS { F4, F5, F6, F7 }
 #define MATRIX_COL_PINS { C6, B1, B3, B2, B6 }
-#define UNUSED_PINS
+
+//#define UNUSED_PINS
 
 /* Dual rotary encoders */
 #define ENCODERS_PAD_A { B4, E6 }

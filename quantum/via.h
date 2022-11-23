@@ -82,6 +82,7 @@ enum via_command_id {
     id_dynamic_keymap_set_buffer            = 0x13,
     id_dynamic_keymap_get_encoder           = 0x14,
     id_dynamic_keymap_set_encoder           = 0x15,
+    id_custom_hidapp                        = 0x69,
     id_unhandled                            = 0xFF,
 };
 
