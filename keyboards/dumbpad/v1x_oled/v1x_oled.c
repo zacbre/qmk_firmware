@@ -17,6 +17,8 @@ bool process_macro_key = false;
 uint16_t key_pressed = 0;
 uint16_t macro_keycode = 0;
 
+bool encoder_volume_mode = false;
+
 void reset_timer(void) {
     oled_on();
     display_sleep = timer_read32();
@@ -116,12 +118,19 @@ void draw_process_count(void) {
     oled_write(&proc_count[0], false);
 }
 
+void draw_volume_mode(void) {
+    oled_set_cursor(0, 5);
+    oled_write_P(PSTR("V:  "), false);
+    oled_write((encoder_volume_mode ? "1" : "0"), false);
+}
+
 void draw_screen(void) {
     draw_layer();
     draw_macro_usage();
     draw_cpu_usage();
     draw_mem_usage();
     draw_process_count();
+    draw_volume_mode();
 }
 
 uint8_t current_layer = 0;
@@ -138,6 +147,27 @@ bool oled_task_user(void) {
 }
 #endif
 
+
+void send_volume_packet(uint8_t packet_header, char* c, bool vol_up) {
+    dprintf("Sending packet!\n");
+    uint8_t packet_data[32];
+    memset(packet_data, '\0', sizeof(packet_data));
+    packet_data[0] = packet_header;
+    memcpy(&packet_data[1], c, strlen(c));
+    uint8_t volume_status[2] = { 0xFF, 0x00 };
+    if (vol_up) {
+        volume_status[1] = 0x01;
+    }
+    memcpy(&packet_data[strlen(c) + 1], volume_status, 2);
+    dprintf("Packet: ");
+    for (int i = 0; i < sizeof(packet_data); i++) {
+        dprintf("0x%02X ", packet_data[i]);
+    }
+    dprintf("\n");
+    raw_hid_send(packet_data, sizeof(packet_data));
+}
+
+
 #ifdef ENCODER_ENABLE
 bool encoder_update_user(uint8_t index, bool clockwise) {
 #ifdef OLED_ENABLE
@@ -146,25 +176,26 @@ bool encoder_update_user(uint8_t index, bool clockwise) {
     // Right encoder
     if (index == 0) {
         if (!clockwise) {
-#ifdef OLED_ENABLE
-            if (current_layer + 1 <= DYNAMIC_KEYMAP_LAYER_COUNT - 1) {
-                layer_move(current_layer+1);
+            if (encoder_volume_mode) {
+                send_volume_packet((uint8_t)0x04, "spotify", true);
             } else {
-                layer_move(0);
+                if (current_layer + 1 <= DYNAMIC_KEYMAP_LAYER_COUNT - 1) {
+                    layer_move(current_layer+1);
+                } else {
+                    layer_move(0);
+                }
             }
-#else
-            tap_code(KC_VOLU);
-#endif
+
         } else {
-#ifdef OLED_ENABLE
-            if (current_layer - 1 >= 0) {
-                layer_move(current_layer-1);
+            if (encoder_volume_mode) {
+                send_volume_packet((uint8_t)0x04, "spotify", false);
             } else {
-                layer_move(DYNAMIC_KEYMAP_LAYER_COUNT - 1);
+                if (current_layer - 1 >= 0) {
+                    layer_move(current_layer-1);
+                } else {
+                    layer_move(DYNAMIC_KEYMAP_LAYER_COUNT - 1);
+                }
             }
-#else
-            tap_code(KC_VOLU);
-#endif
         }
     }
     return true;
@@ -237,6 +268,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     reset_timer();
 #endif
     switch (keycode) {
+        case KC_FN0: ;
+            if (record->event.pressed) {
+                encoder_volume_mode = !encoder_volume_mode;
+            }
+            return false;
+
         case KC_F20:
         case KC_F21:
         case KC_F22:
@@ -269,33 +306,33 @@ float get_f64(uint8_t *data, uint32_t index) {
 }
 
 void raw_hid_receive_kb(uint8_t *data, uint8_t length) {
-    dprintf("raw_receive_kb!\n");
-    for (int i = 0; i < length; i++) {
+    //dprintf("raw_receive_kb!\n");
+    /*for (int i = 0; i < length; i++) {
         dprintf("0x%02X ", data[i]);
     }
-    dprintf("\n");
+    dprintf("\n");*/
 
     uint8_t *packet_header = &(data[1]);
 
     uint8_t packet_data[30];
     memcpy(packet_data, &data[2], sizeof(packet_data));
-    for (int i = 0; i < sizeof(packet_data); i++) {
+    /*for (int i = 0; i < sizeof(packet_data); i++) {
         dprintf("0x%02X ", packet_data[i]);
     }
-    dprintf("\n");
+    dprintf("\n");*/
     switch (*packet_header) {
         case 0x01:
             // cpu usage
-            dprintf("CPU Usage: %d\n", packet_data[0]);
+            //dprintf("CPU Usage: %d\n", packet_data[0]);
             cpu_usage = packet_data[0];
             break;
         case 0x02:
-            dprintf("Mem Usage: %d\n", packet_data[0]);
+            //dprintf("Mem Usage: %d\n", packet_data[0]);
             mem_usage = packet_data[0];
             break;
         case 0x03:
             process_count = packet_data[1] | (packet_data[0] << 8);
-            dprintf("Process Count: %d\n", process_count);
+            //dprintf("Process Count: %d\n", process_count);
             break;
     }
     /*dprintf("\n");

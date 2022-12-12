@@ -472,6 +472,8 @@ enum hid_keyboard_keypad_usage {
     // **********************************************
 };
 
+
+
 /* Media and Function keys */
 enum internal_special_keycodes {
     /* Generic Desktop Page (0x01) */
@@ -540,6 +542,41 @@ enum mouse_keys {
     KC_MS_ACCEL0,
     KC_MS_ACCEL1,
     KC_MS_ACCEL2 // 0xFF
+};
+
+enum user_functions {
+  KC_FN0 = 0x00C0,
+  KC_FN1 = 0x00C1,
+  KC_FN2 = 0x00C2,
+  KC_FN3 = 0x00C3,
+  KC_FN4 = 0x00C4,
+  KC_FN5 = 0x00C5,
+  KC_FN6 = 0x00C6,
+  KC_FN7 = 0x00C7,
+  KC_FN8 = 0x00C8,
+  KC_FN9 = 0x00C9,
+  KC_FN10 = 0x00CA,
+  KC_FN11 = 0x00CB,
+  KC_FN12 = 0x00CC,
+  KC_FN13 = 0x00CD,
+  KC_FN14 = 0x00CE,
+  KC_FN15 = 0x00CF,
+  KC_FN16 = 0x00D0,
+  KC_FN17 = 0x00D1,
+  KC_FN18 = 0x00D2,
+  KC_FN19 = 0x00D3,
+  KC_FN20 = 0x00D4,
+  KC_FN21 = 0x00D5,
+  KC_FN22 = 0x00D6,
+  KC_FN23 = 0x00D7,
+  KC_FN24 = 0x00D8,
+  KC_FN25 = 0x00D9,
+  KC_FN26 = 0x00DA,
+  KC_FN27 = 0x00DB,
+  KC_FN28 = 0x00DC,
+  KC_FN29 = 0x00DD,
+  KC_FN30 = 0x00DE,
+  KC_FN31 = 0x00DF,
 };
 
 #include "keycode_legacy.h"
