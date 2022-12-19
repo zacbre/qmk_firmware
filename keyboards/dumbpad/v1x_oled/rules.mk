@@ -24,7 +24,11 @@ RAW_ENABLE = yes
 ENCODER_ENABLE = yes
 OLED_ENABLE = yes
 OLED_DRIVER = SSD1306
-WPM_ENABLE = yes
+WPM_ENABLE = no
 
-#Link_Time_Optimization = yes # Reduce size of firmware by optimizing at link time
-#EXTRAFLAGS += -flto
+Link_Time_Optimization = yes # Reduce size of firmware by optimizing at link time
+EXTRAFLAGS += -flto
+
+SRC += screen.c \
+       volume.c \
+       macro.c

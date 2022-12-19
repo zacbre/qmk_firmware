@@ -39,7 +39,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                     KC_CUT,   KC_COPY,   KC_PASTE, _______,
                     KC_UNDO,  KC_REDO,   KC_OREDO, KC_6,
                     KC_TAB,   KC_1,      KC_2,     KC_EQL,
-        KC_MUTE,    _______,  KC_LOCK,   KC_0,     KC_LSHIFT
+        KC_F13,    _______,  KC_LOCK,   KC_0,     KC_LSHIFT
     ),
     /*
             SUB LAYER
@@ -68,7 +68,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     [3] = LAYOUT(
-                    _______,     _______,     _______,      _______,
+                    KC_FN0,      KC_FN1,      KC_FN2,       KC_FN3,
                     _______,     _______,     _______,      _______,
                     _______,     _______,     _______,      _______,
         _______,    _______,     _______,     _______,      _______
