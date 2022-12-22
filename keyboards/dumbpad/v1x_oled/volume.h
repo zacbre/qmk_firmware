@@ -11,6 +11,7 @@ enum packet_header {
     get_volume_header = 0x05,
     force_set_volume_header = 0x06,
     gpu_utilization_header = 0x07,
+    stats_header = 0x08
 };
 
 typedef struct program_volume {

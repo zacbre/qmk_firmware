@@ -63,36 +63,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 void raw_hid_receive_kb(uint8_t *data, uint8_t length) {
-    //dprintf("raw_receive_kb!\n");
-    /*for (int i = 0; i < length; i++) {
-        dprintf("0x%02X ", data[i]);
-    }
-    dprintf("\n");*/
-
     uint8_t *packet_header = &(data[1]);
-
     uint8_t packet_data[30];
-    //dprintf("Received packet!: 0x%02X\n", packet_header);
     memcpy(packet_data, &data[2], sizeof(packet_data));
-    //for (int i = 0; i < sizeof(packet_data); i++) {
-    //    dprintf("0x%02X ", packet_data[i]);
-    //}
-    //dprintf("\n");
     switch (*packet_header) {
-        case cpu_usage_header:
-            // cpu usage
-            //dprintf("CPU Usage: %d\n", packet_data[0]);
+        case stats_header:
             cpu_usage = packet_data[0];
+            mem_usage = packet_data[1];
+            process_count = packet_data[3] | (packet_data[2] << 8);
+            gpu_usage = packet_data[4];
             oled_clear();
-            break;
-        case mem_usage_header:
-            //dprintf("Mem Usage: %d\n", packet_data[0]);
-            mem_usage = packet_data[0];
-            oled_clear();
-            break;
-        case proc_count_header:
-            process_count = packet_data[1] | (packet_data[0] << 8);
-            //dprintf("Process Count: %d\n", process_count);
             break;
         case get_volume_header:
             current_volume = packet_data[0];
@@ -106,21 +86,5 @@ void raw_hid_receive_kb(uint8_t *data, uint8_t length) {
             }
             oled_clear();
             break;
-        case gpu_utilization_header:
-            gpu_usage = packet_data[0];
-            oled_clear();
-            break;
     }
-    /*dprintf("\n");
-    char xxd[32];
-    truncate_first_bytes(data, length, xxd);
-    dprintf("Actual recv: '%s'\n", xxd);
-    char c[32] = "ayy lma0";
-    for (int i = 0; i < sizeof(c); i++) {
-        dprintf("0x%02X ", c[i]);
-    }
-    dprintf("\n");
-    dprintf("Actual send: '%s'\n", c);
-    uint8_t *u = (uint8_t *)&c;
-    raw_hid_send(u, sizeof(c));*/
 }

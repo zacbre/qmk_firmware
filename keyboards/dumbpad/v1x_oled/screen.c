@@ -124,16 +124,15 @@ void draw_volume_mode(void) {
     }
     oled_set_cursor(0, 1);
 
-    /*if (strlen(current_application) > 13) {
+    if (strlen(current_application) > 13) {
         // truncate what we output.
         char temp_app[16];
         memcpy(&temp_app[0], &current_application[0], 13);
         memcpy(&temp_app[13], &"...", 3);
         oled_write(temp_app, false);
     } else {
-
-    }*/
-    oled_write(current_application, false);
+        oled_write(current_application, false);
+    }
     oled_set_cursor(0, 2);
     if (current_volume != 0xFF) {
         char current_vol[2];
