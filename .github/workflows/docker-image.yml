@@ -22,7 +22,7 @@ jobs:
         run: echo ::set-output name=version::$(echo $GITHUB_REF | cut -d / -f 3 | sed s/^v// | sed 's/-a//' )
   
       - name: Build the Docker image
-        run: docker-compose up
+        run: make git-submodule && docker-compose up
 
       - name: Create Release Draft
         id: create_release
