@@ -1,0 +1,10 @@
+{
+    "keyboard_name": "Zac Dumbpad",
+    "manufacturer": "Zac",
+    "url": "https://www.github.com/zacbre",
+    "maintainer": "zacbre",
+    "usb": {
+        "vid": "0xDEAF",
+        "pid": "0x0913"
+    }
+}
